@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - E-health</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <header class="bg-blue-900 text-white shadow">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">E-Health Sistem</a>
+            <div class="hidden md:flex space-x-6">
+                
+            </div>
+            <button class="md:hidden text-white" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+        <div class="flex flex-col lg:flex-row">
+            <!-- Poster Section -->
+            <div class="lg:w-1/2 p-4 flex items-center justify-center">
+                <img src="\images\Blue and Orange Modern AI Chat Rules Poster.png" alt="Poster" class="w-full h-auto object-cover rounded-lg shadow-md">
+            </div>
+
+            <!-- Content Section -->
+            <div class="lg:w-1/2 p-4">
+                <h1 class="text-2xl font-bold mb-6 text-center">Welcome to E-health Project</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-pills text-blue-900 text-4xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-2 text-center">Pengadaan Obat</h2>
+                        <p class="text-gray-600 text-center mb-4">Fitur ini berisi mengenai data obat dan menambahkan obat baru.</p>
+                        <a href="/medicines" target="_blank" class="block bg-blue-900 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Input Data</a>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-stethoscope text-blue-900 text-4xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-2 text-center">SiRek</h2>
+                        <p class="text-gray-600 text-center mb-4">Sistem rekomendasi obat yang dapat membantu menemukan obat yang tepat untuk pasien.</p>
+                        <a href="/Sirek" target="_blank" class="block bg-blue-900 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Pakai SiRek</a>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-map-marker-alt text-blue-900 text-4xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-2 text-center">Place Apotek</h2>
+                        <p class="text-gray-600 text-center mb-4">Fitur untuk memberitahu tempat apotek terdekat dari lokasi pasien.</p>
+                        <a href="/apotek" target="_blank" class="block bg-blue-900 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">Telusuri Apotek</a>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="flex items-center justify-center mb-4">
+                            <i class="fas fa-comments text-blue-900 text-4xl"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold mb-2 text-center">FAQ</h2>
+                        <p class="text-gray-600 text-center mb-4">Kumpulan pertanyaan dan jawaban yang sering ditanyakan oleh pengguna.</p>
+                        <a href="/generalQ" target="_blank" class="block bg-blue-900 text-white px-4 py-2 rounded-md text-center hover:bg-blue-800">View FAQ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-6 mt-10">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 E-Health Sistem. All Rights Reserved.</p>
+            <p>Developed by E-health Project Team & ChatGPT</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        menuToggle.addEventListener('click', () => {
+            // Add functionality for responsive navbar menu toggle if needed
+        });
+    </script>
+</body>
+</html>

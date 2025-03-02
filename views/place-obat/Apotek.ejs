@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temukan Apotek Terdekat</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; border-radius: 10px; margin-top: 10px; }
+        .list-group { max-height: 400px; overflow-y: auto; }
+        .apotek-item:hover { background-color: #f8f9fa; cursor: pointer; }
+        .footer { margin-top: 20px; padding: 10px; background: #343a40; color: white; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"> Maps Apotek Terdekat</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Peta -->
+            <div class="col-md-8">
+                <h4>🗺️ Peta Apotek Terdekat</h4>
+                <p id="status" class="text-danger">Klik tombol untuk menemukan apotek...</p>
+                <button class="btn btn-primary mb-2" onclick="getLocation()">🔍 Cari Apotek</button>
+                <div id="map"></div>
+            </div>
+
+            <!-- List Apotek -->
+            <div class="col-md-4">
+                <h4>🏥 Daftar Apotek</h4>
+                <ul class="list-group" id="apotek-list">
+                    <li class="list-group-item">Belum ada data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>© 2025 Peta Apotek Terdekat - OpenStreetMap & Leaflet.js</p>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        let map = L.map('map').setView([-6.200, 106.816], 13); // Default Jakarta
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        let userMarker;
+        let apotekMarkers = [];
+
+        function getLocation() {
+            document.getElementById("status").innerText = "Mencari lokasi...";
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("status").innerText = "Geolocation tidak didukung di browser Anda.";
+            }
+        }
+
+        function showPosition(position) {
+            let lat = position.coords.latitude;
+            let lng = position.coords.longitude;
+
+            document.getElementById("status").innerText = "Menampilkan apotek terdekat...";
+            map.setView([lat, lng], 14);
+
+            if (userMarker) map.removeLayer(userMarker);
+            userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup("📍 Lokasi Anda").openPopup();
+
+            // Hapus marker lama
+            apotekMarkers.forEach(marker => map.removeLayer(marker));
+            apotekMarkers = [];
+
+            fetch(`/apotek/nearby?lat=${lat}&lng=${lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    let listElement = document.getElementById("apotek-list");
+                    listElement.innerHTML = ""; // Kosongkan list
+
+                    if (data.length === 0) {
+                        document.getElementById("status").innerText = "Tidak ditemukan apotek di sekitar lokasi Anda.";
+                        listElement.innerHTML = "<li class='list-group-item'>Tidak ada apotek ditemukan</li>";
+                        return;
+                    }
+
+                    document.getElementById("status").innerText = `Ditemukan ${data.length} apotek terdekat.`;
+
+                    data.forEach(place => {
+                        let apotekMarker = L.marker([place.lat, place.lon], { icon: apotekIcon })
+                            .addTo(map)
+                            .bindPopup(`<b>${place.display_name}</b>`);
+                        apotekMarkers.push(apotekMarker);
+
+                        let listItem = document.createElement("li");
+                        listItem.className = "list-group-item apotek-item";
+                        listItem.innerHTML = `🏥 ${place.display_name}`;
+                        listItem.onclick = () => map.setView([place.lat, place.lon], 16);
+                        listElement.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Gagal mengambil data apotek:', error);
+                    document.getElementById("status").innerText = "Gagal mendapatkan data apotek.";
+                });
+        }
+
+        function showError(error) {
+            document.getElementById("status").innerText = "Gagal mendapatkan lokasi: " + error.message;
+        }
+
+        // Ikon khusus untuk lokasi pengguna
+        const userIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        // Ikon khusus untuk apotek
+        const apotekIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2965/2965879.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
